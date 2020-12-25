@@ -6,4 +6,6 @@ firebase storage file upload
 -
 -
 firebase read data =>
+
+
 ![alt text](https://github.com/halitkurt/firebase-stronge-and-realtime-database/blob/main/ss.png)
