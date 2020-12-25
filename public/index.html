@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>firebase-stronge-and-realtime-database</title>
+ <link rel="stylesheet" href="style.css">
+ <script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+</head>
+<body>
+  <h3 id="h1text"><h3>
+<div id="div1">
+    <textarea placeholder="Message" id="message" cols="50" rows="20"></textarea>
+    <br>
+   
+    <button onclick="check()">Send</button>
+  </div>
+    <br>
+    <br>
+    <div id="div2">
+    <progress value="0" max="100" id="uploader">%0</progress>
+    <input value="upload" id="fileButton" type="file">
+
+  
+  </div>
+   
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js">
+//If the versions are old, don't forget to update the versions !!!</script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-analytics.js">
+//If the versions are old, don't forget to update the versions !!!</script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js">
+//If the versions are old, don't forget to update the versions !!!</script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-database.js">
+//If the versions are old, don't forget to update the versions !!!</script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-storage.js">
+//If the versions are old, don't forget to update the versions !!!</script>
+
+<script>
+  //********firebase settings**********
+  var firebaseConfig = {
+    apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  
+
+//************firebase read data*********
+
+/*If you want to import data from firebase, enter realtime database 
+and press add child, type text and leave the value part blank.*/
+  var h1text = document.getElementById('h1text')
+  var dbRef = firebase.database().ref().child('text');
+  dbRef.on('value', snap => h1text.innerText = snap.val());
+
+
+
+
+function uploadcheck(){
+//***upload-file***
+
+//get-element
+var uploader = document.getElementById('uploader');
+var fileButton = document.getElementById('fileButton');
+
+// listem-for-file 
+
+fileButton.addEventListener('change', function(e){
+//get-file 
+
+var file = e.target.files[0];
+
+//ceate a stornge ref
+ var storageRef = firebase.storage().ref('files/' + file.name);
+
+//upload-file
+
+var task = storageRef.put(file);
+
+//progres-bar 
+
+
+  task.on('state_changed',
+function progres(snapshot){
+  var percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  uploader.value = percentage;
+},
+
+function error(err){
+
+},
+function complete(){
+
+}
+);
+});
+}
+
+</script>
+<script src="script.js"></script>
+
+</html>
